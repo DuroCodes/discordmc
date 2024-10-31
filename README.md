@@ -14,6 +14,7 @@ a simple minecraft -> discord minecraft plugin made with Kotlin
 
 > [!TIP]
 > You can disable events by removing the `webhook` key from the configuration file
+> 
 > Or removing the `content` field, and setting `embedEnabled` to `false`
 
 ```toml
