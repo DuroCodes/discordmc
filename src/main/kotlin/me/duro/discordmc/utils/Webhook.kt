@@ -98,9 +98,7 @@ object Webhook {
             val writer = OutputStreamWriter(connection.outputStream)
             writer.use { it.write(payload.toString()) }
 
-            if (connection.responseCode == HttpURLConnection.HTTP_NO_CONTENT) {
-                println("Webhook sent successfully")
-            } else {
+            if (connection.responseCode != HttpURLConnection.HTTP_NO_CONTENT) {
                 println("Failed to send webhook")
                 println("Response code: ${connection.responseCode}")
                 println("Response message: ${connection.responseMessage}")
