@@ -5,6 +5,7 @@ a simple minecraft -> discord minecraft plugin made with Kotlin
 ## Features
 
 - `.toml` configuration file
+  - reloadable with the `/discordmc reload` command (requires `discordmc.reload` permission)
 - webhook support
 - (mostly) fully customizable messages
   - embed support (if you want to enable it)

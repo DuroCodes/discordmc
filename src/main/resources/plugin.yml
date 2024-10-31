@@ -1,0 +1,10 @@
+name: DiscordMC
+version: '1.0-SNAPSHOT'
+main: me.duro.discordmc.DiscordMC
+api-version: '1.21'
+
+commands:
+  discordmc:
+    description: DiscordMC command
+    usage: /discordmc <reload>
+    permission: discordmc.reload
