@@ -7,18 +7,18 @@ import java.io.File
 import java.nio.file.Path
 
 data class EventConfig(
-    val webhook: String?, val embed: Webhook.Embed?, val content: String?
+    val webhook: String? = null, val embed: Webhook.Embed? = null, val content: String? = null
 )
 
 data class Config(
-    val chat: EventConfig,
-    val join: EventConfig,
-    val leave: EventConfig,
-    val death: EventConfig,
-    val playerCommand: EventConfig,
-    val serverCommand: EventConfig,
-    val start: EventConfig,
-    val stop: EventConfig
+    val chat: EventConfig?,
+    val join: EventConfig?,
+    val leave: EventConfig?,
+    val death: EventConfig?,
+    val playerCommand: EventConfig?,
+    val serverCommand: EventConfig?,
+    val start: EventConfig?,
+    val stop: EventConfig?
 )
 
 object ConfigLoader {

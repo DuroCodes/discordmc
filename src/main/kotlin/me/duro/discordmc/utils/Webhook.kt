@@ -45,9 +45,9 @@ object Webhook {
     ).toList().toTypedArray()
 
     fun sendWebhook(
-        config: EventConfig, placeholders: Map<String, String> = emptyMap()
+        config: EventConfig?, placeholders: Map<String, String> = emptyMap()
     ) {
-        if (config.webhook == null) return
+        if (config?.webhook == null) return
 
         val url = URI(config.webhook).toURL()
         val connection = url.openConnection() as HttpURLConnection
