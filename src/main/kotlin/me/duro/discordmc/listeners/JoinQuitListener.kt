@@ -3,28 +3,25 @@ package me.duro.discordmc.listeners
 import me.duro.discordmc.DiscordMC
 import me.duro.discordmc.utils.Webhook
 import org.bukkit.event.EventHandler
+import org.bukkit.event.EventPriority
 import org.bukkit.event.Listener
 import org.bukkit.event.player.PlayerJoinEvent
 import org.bukkit.event.player.PlayerQuitEvent
 
 class JoinQuitListener : Listener {
-    @EventHandler
+    @EventHandler(priority = EventPriority.MONITOR)
     fun onPlayerJoin(event: PlayerJoinEvent) {
-        val config = DiscordMC.instance.toml.join
-
         Webhook.sendWebhook(
-            config.webhook, config.embed, config.embedEnabled, config.content, mapOf(
+            DiscordMC.instance.toml.join, mapOf(
                 *Webhook.playerPlaceholders(event.player)
             )
         )
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.MONITOR)
     fun onPlayerQuit(event: PlayerQuitEvent) {
-        val config = DiscordMC.instance.toml.leave
-
         Webhook.sendWebhook(
-            config.webhook, config.embed, config.embedEnabled, config.content, mapOf(
+            DiscordMC.instance.toml.leave, mapOf(
                 *Webhook.playerPlaceholders(event.player)
             )
         )

@@ -7,7 +7,7 @@ import java.io.File
 import java.nio.file.Path
 
 data class EventConfig(
-    val webhook: String, val embed: Webhook.Embed, val embedEnabled: Boolean, val content: String?
+    val webhook: String?, val embed: Webhook.Embed?, val content: String?
 )
 
 data class Config(
@@ -16,7 +16,9 @@ data class Config(
     val leave: EventConfig,
     val death: EventConfig,
     val playerCommand: EventConfig,
-    val serverCommand: EventConfig
+    val serverCommand: EventConfig,
+    val start: EventConfig,
+    val stop: EventConfig
 )
 
 object ConfigLoader {
@@ -25,146 +27,79 @@ object ConfigLoader {
 
         if (!filePath.exists()) {
             filePath.parentFile.mkdirs()
-            filePath.writeText(
-                """
-                    # DiscordMC Configuration
-                    # This file is written in TOML format (https://toml.io/en/)
-                    # You can also use placeholder values, specified in the comments below for each event specifically
-                    
-                    # This gets ran whenever a player sends a chat message
-                    # The placeholders available are:
-                    # - {player} - Player's name
-                    # - {message} - Chat message
-                    # - {x} | {y} | {z} - Player's coordinates
-                    # - {world} - Player's world
-                    [chat]
-                    webhook = "https://discord.com/api/webhooks/123456/abcdef"
-                    content = "{player}: {message}" # optional, remove if you don't want a content
-                    embedEnabled = true
-                    [chat.embed]
-                    title = "Chat Message"
-                    description = "{message}"
-                    color = "#FFC0CB"
-                    timestamp = true
-                    [chat.embed.author]
-                    name = "{player}"
-                    iconUrl = "https://minotar.net/helm/{player}/512.png"
-                    [chat.embed.footer]
-                    text = "Chat"
-                    iconUrl = "https://cdn.discordapp.com/embed/avatars/0.png"
-                    
-                    # This gets ran whenever a player joins the server
-                    # The placeholders available are:
-                    # - {player} - Player's name
-                    # - {x} | {y} | {z} - Player's coordinates
-                    # - {world} - Player's world
-                    [join]
-                    webhook = "https://discord.com/api/webhooks/123456/abcdef"
-                    content = "{player} joined the server" # optional, remove if you don't want a content
-                    embedEnabled = true
-                    [join.embed]
-                    title = "Player Join"
-                    description = "Joined the server"
-                    color = "#FFC0CB"
-                    timestamp = true
-                    [join.embed.author]
-                    name = "{player}"
-                    iconUrl = "https://minotar.net/helm/{player}/512.png"
-                    [join.embed.footer]
-                    text = "Join"
-                    iconUrl = "https://cdn.discordapp.com/embed/avatars/0.png"
-                    
-                    # This gets ran whenever a player leaves the server
-                    # The placeholders available are:
-                    # - {player} - Player's name
-                    # - {x} | {y} | {z} - Player's coordinates
-                    # - {world} - Player's world
-                    [leave]
-                    webhook = "https://discord.com/api/webhooks/123456/abcdef"
-                    content = "{player} left the server" # optional, remove if you don't want a content
-                    embedEnabled = true
-                    [leave.embed]
-                    title = "Player Leave"
-                    description = "Left the server"
-                    color = "#FFC0CB"
-                    timestamp = true
-                    [leave.embed.author]
-                    name = "{player}"
-                    iconUrl = "https://minotar.net/helm/{player}/512.png"
-                    [leave.embed.footer]
-                    text = "Leave"
-                    iconUrl = "https://cdn.discordapp.com/embed/avatars/0.png"
-                    
-                    # This gets ran whenever a player dies
-                    # The placeholders available are:
-                    # - {player} - Player's name
-                    # - {message} - Death message
-                    # - {x} | {y} | {z} - Player's coordinates
-                    # - {world} - Player's world
-                    [death]
-                    webhook = "https://discord.com/api/webhooks/123456/abcdef"
-                    content = "{message}" # optional, remove if you don't want a content
-                    embedEnabled = true
-                    [death.embed]
-                    title = "Player Death"
-                    description = "{message}"
-                    color = "#FFC0CB"
-                    timestamp = true
-                    [death.embed.author]
-                    name = "{player}"
-                    iconUrl = "https://minotar.net/helm/{player}/512.png"
-                    [death.embed.footer]
-                    text = "Death"
-                    iconUrl = "https://cdn.discordapp.com/embed/avatars/0.png"
-                    
-                    # This gets ran whenever a player runs a command
-                    # The placeholders available are:
-                    # - {player} - Command sender's name
-                    # - {message} - Command message
-                    # - {x} | {y} | {z} - Player's coordinates
-                    # - {world} - Player's world
-                    [playerCommand]
-                    webhook = "https://discord.com/api/webhooks/123456/abcdef"
-                    content = "{player}: {message}" # optional, remove if you don't want a content
-                    embedEnabled = true
-                    [playerCommand.embed]
-                    title = "Command"
-                    description = "{message}"
-                    color = "#FFC0CB"
-                    timestamp = true
-                    [playerCommand.embed.author]
-                    name = "{player}"
-                    iconUrl = "https://minotar.net/helm/{player}/512.png"
-                    [playerCommand.embed.footer]
-                    text = "Command"
-                    iconUrl = "https://cdn.discordapp.com/embed/avatars/0.png"
-                    
-                    # This gets ran whenever CONSOLE runs a command
-                    # The placeholders available are:
-                    # - {player} - Command sender's name (although it's always "CONSOLE")
-                    # - {message} - Command message
-                    [serverCommand]
-                    webhook = "https://discord.com/api/webhooks/123456/abcdef"
-                    content = "{player}: {message}" # optional, remove if you don't want a content
-                    embedEnabled = true
-                    [serverCommand.embed]
-                    title = "Server Command"
-                    description = "{message}"
-                    color = "#FFC0CB"
-                    timestamp = true
-                    [serverCommand.embed.author]
-                    name = "{player}"
-                    iconUrl = "https://minotar.net/helm/{player}/512.png"
-                    [serverCommand.embed.footer]
-                    text = "Server Command"
-                    iconUrl = "https://cdn.discordapp.com/embed/avatars/0.png"
-                """.trimIndent()
-            )
+            filePath.writeText(generateConfig())
         }
 
         tomlMapper { }.decode<Config>(Path.of(filePath.toURI()))
     } catch (e: Exception) {
         e.printStackTrace()
         null
+    }
+
+    private fun generateConfig(): String {
+        val configBuilder = StringBuilder().apply {
+            appendLine("# DiscordMC Configuration")
+            appendLine("# This file is written in TOML format (https://toml.io/en/)")
+            appendLine("# You can also use placeholder values, for each event specifically")
+        }
+
+        val playerPlaceholders = mapOf(
+            "{player}" to "Player's name",
+            "{x}" to "Player's X coordinate",
+            "{y}" to "Player's Y coordinate",
+            "{z}" to "Player's Z coordinate",
+            "{world}" to "Player's world"
+        )
+
+        val events = arrayOf(
+            Triple("chat", "a player sends a chat message", playerPlaceholders + mapOf("{message}" to "Chat message")),
+            Triple("join", "a player joins the server", playerPlaceholders),
+            Triple("leave", "a player leaves the server", playerPlaceholders),
+            Triple("death", "a player dies", playerPlaceholders + mapOf("{message}" to "Death message")),
+            Triple(
+                "playerCommand", "a player runs a command", playerPlaceholders + mapOf("{message}" to "Command message")
+            ),
+            Triple(
+                "serverCommand", "CONSOLE runs a command", mapOf(
+                    "{player}" to "Player's name (always CONSOLE)", "{message}" to "Command message"
+                )
+            ),
+            Triple("start", "the server starts", null),
+            Triple("stop", "the server stops", null)
+        )
+
+        events.forEach {
+            configBuilder.appendLine(generateEventConfig(it.first, it.second, it.third))
+        }
+
+        return configBuilder.toString()
+    }
+
+    private fun generateEventConfig(
+        eventName: String, description: String, placeholders: Map<String, String>?
+    ): String {
+        val placeholdersComment = placeholders?.let { p ->
+            "# The placeholders available are:\n${p.entries.joinToString("\n") { "# - ${it.key} - ${it.value}" }}"
+        } ?: "# No placeholders available"
+
+        return arrayOf(
+            "",
+            "# This gets triggered whenever $description",
+            placeholdersComment,
+            "[$eventName]",
+            "webhook = \"https://discord.com/api/webhooks/123456/abcdef\" # remove if you don't want a webhook",
+            "content = \"\" # remove if you don't want content",
+            "[$eventName.embed] # remove if you don't want an embed",
+            "title = \"$eventName\"",
+            "description = \"\"",
+            "color = \"#FFFFFF\"",
+            "timestamp = true",
+            "[$eventName.embed.author]",
+            "name = \"{player}\"",
+            "iconUrl = \"https://minotar.net/helm/{player}/512.png\"",
+            "[$eventName.embed.footer]",
+            "text = \"$eventName\"",
+            "iconUrl = \"https://cdn.discordapp.com/embed/avatars/0.png\""
+        ).joinToString("\n")
     }
 }

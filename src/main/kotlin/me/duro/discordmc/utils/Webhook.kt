@@ -45,13 +45,11 @@ object Webhook {
     ).toList().toTypedArray()
 
     fun sendWebhook(
-        webhookUrl: String,
-        embed: Embed,
-        embedEnabled: Boolean,
-        content: String?,
-        placeholders: Map<String, String> = emptyMap()
+        config: EventConfig, placeholders: Map<String, String> = emptyMap()
     ) {
-        val url = URI(webhookUrl).toURL()
+        if (config.webhook == null) return
+
+        val url = URI(config.webhook).toURL()
         val connection = url.openConnection() as HttpURLConnection
 
         try {
@@ -61,38 +59,48 @@ object Webhook {
                 setRequestProperty("Content-Type", "application/json")
             }
 
-            val embedJson = JSONObject().apply {
-                put("title", substitutePlaceholders(embed.title ?: "", placeholders))
-                put("description", escapeFormatting(substitutePlaceholders(embed.description, placeholders)))
-                embed.color?.let {
-                    put(
-                        "color", substitutePlaceholders(it, placeholders).removePrefix("#").toIntOrNull(16)
-                    )
-                }
-
-                embed.author?.let { author ->
-                    put("author", JSONObject().apply {
-                        author.name?.let { put("name", substitutePlaceholders(it, placeholders)) }
-                        author.url?.let { put("url", substitutePlaceholders(it, placeholders)) }
-                        author.iconUrl?.let { put("icon_url", substitutePlaceholders(it, placeholders)) }
-                        author.proxyIconUrl?.let { put("proxy_icon_url", substitutePlaceholders(it, placeholders)) }
-                    })
-                }
-
-                embed.footer?.let { footer ->
-                    put("footer", JSONObject().apply {
-                        footer.text?.let { put("text", substitutePlaceholders(it, placeholders)) }
-                        footer.iconUrl?.let { put("icon_url", substitutePlaceholders(it, placeholders)) }
-                        footer.proxyIconUrl?.let { put("proxy_icon_url", substitutePlaceholders(it, placeholders)) }
-                    })
-                }
-
-                if (embed.timestamp == true) put("timestamp", OffsetDateTime.now().toString())
-            }
-
             val payload = JSONObject().apply {
-                if (embedEnabled) put("embeds", listOf(embedJson))
-                content?.let { put("content", escapeFormatting(substitutePlaceholders(it, placeholders))) }
+                config.content?.let { put("content", escapeFormatting(substitutePlaceholders(it, placeholders))) }
+
+                config.embed?.let { embed ->
+                    val embedJson = JSONObject().apply {
+                        put("title", substitutePlaceholders(embed.title ?: "", placeholders))
+                        put("description", escapeFormatting(substitutePlaceholders(embed.description, placeholders)))
+                        embed.color?.let {
+                            put(
+                                "color", substitutePlaceholders(it, placeholders).removePrefix("#").toIntOrNull(16)
+                            )
+                        }
+
+                        embed.author?.let { author ->
+                            put("author", JSONObject().apply {
+                                author.name?.let { put("name", substitutePlaceholders(it, placeholders)) }
+                                author.url?.let { put("url", substitutePlaceholders(it, placeholders)) }
+                                author.iconUrl?.let { put("icon_url", substitutePlaceholders(it, placeholders)) }
+                                author.proxyIconUrl?.let {
+                                    put(
+                                        "proxy_icon_url", substitutePlaceholders(it, placeholders)
+                                    )
+                                }
+                            })
+                        }
+
+                        embed.footer?.let { footer ->
+                            put("footer", JSONObject().apply {
+                                footer.text?.let { put("text", substitutePlaceholders(it, placeholders)) }
+                                footer.iconUrl?.let { put("icon_url", substitutePlaceholders(it, placeholders)) }
+                                footer.proxyIconUrl?.let {
+                                    put(
+                                        "proxy_icon_url", substitutePlaceholders(it, placeholders)
+                                    )
+                                }
+                            })
+                        }
+
+                        if (embed.timestamp == true) put("timestamp", OffsetDateTime.now().toString())
+                    }
+                    put("embeds", listOf(embedJson))
+                }
             }
 
             val writer = OutputStreamWriter(connection.outputStream)
