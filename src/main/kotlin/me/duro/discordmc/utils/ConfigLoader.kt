@@ -82,7 +82,7 @@ object ConfigLoader {
             ),
             Triple("start", "the server starts", null),
             Triple("stop", "the server stops", null),
-            Triple("restart", "the server is restarting", null)
+            Triple("restart", "the server is restarting", mapOf("{message}" to "Restart Mssage"))
         )
 
         events.forEach {
