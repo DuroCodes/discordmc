@@ -6,9 +6,24 @@ import cc.ekblad.toml.tomlMapper
 import java.io.File
 import java.nio.file.Path
 
+interface WebhookConfig {
+    val webhook: String?
+    val embed: Webhook.Embed?
+    val content: String?
+}
+
 data class EventConfig(
-    val webhook: String? = null, val embed: Webhook.Embed? = null, val content: String? = null
-)
+    override val webhook: String? = null,
+    override val embed: Webhook.Embed? = null,
+    override val content: String? = null,
+) : WebhookConfig
+
+data class RestartConfig(
+    val times: List<String>? = emptyList(),
+    override val webhook: String? = null,
+    override val embed: Webhook.Embed? = null,
+    override val content: String? = null
+) : WebhookConfig
 
 data class Config(
     val chat: EventConfig?,
@@ -18,7 +33,8 @@ data class Config(
     val playerCommand: EventConfig?,
     val serverCommand: EventConfig?,
     val start: EventConfig?,
-    val stop: EventConfig?
+    val stop: EventConfig?,
+    val restart: RestartConfig?
 )
 
 object ConfigLoader {
@@ -65,7 +81,8 @@ object ConfigLoader {
                 )
             ),
             Triple("start", "the server starts", null),
-            Triple("stop", "the server stops", null)
+            Triple("stop", "the server stops", null),
+            Triple("restart", "the server is restarting", null)
         )
 
         events.forEach {
@@ -75,6 +92,7 @@ object ConfigLoader {
         return configBuilder.toString()
     }
 
+
     private fun generateEventConfig(
         eventName: String, description: String, placeholders: Map<String, String>?
     ): String {
@@ -82,7 +100,7 @@ object ConfigLoader {
             "# The placeholders available are:\n${p.entries.joinToString("\n") { "# - ${it.key} - ${it.value}" }}"
         } ?: "# No placeholders available"
 
-        return arrayOf(
+        val options = mutableListOf(
             "",
             "# This gets triggered whenever $description",
             placeholdersComment,
@@ -100,6 +118,15 @@ object ConfigLoader {
             "[$eventName.embed.footer]",
             "text = \"$eventName\"",
             "iconUrl = \"https://cdn.discordapp.com/embed/avatars/0.png\""
-        ).joinToString("\n")
+        )
+
+        if (eventName == "restart") {
+            val webhookIndex = options.indexOfFirst { it.startsWith("webhook =") }
+            if (webhookIndex != -1) {
+                options.add(webhookIndex + 1, "times = [\"00:00\", \"06:00\", \"12:00\", \"18:00\"]")
+            }
+        }
+
+        return options.joinToString("\n")
     }
 }
