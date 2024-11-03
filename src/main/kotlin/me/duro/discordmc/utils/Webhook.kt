@@ -45,7 +45,7 @@ object Webhook {
     ).toList().toTypedArray()
 
     fun sendWebhook(
-        config: EventConfig?, placeholders: Map<String, String> = emptyMap()
+        config: WebhookConfig?, placeholders: Map<String, String> = emptyMap()
     ) {
         if (config?.webhook == null) return
 
