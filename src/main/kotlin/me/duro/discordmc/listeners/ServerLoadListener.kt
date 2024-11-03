@@ -7,7 +7,7 @@ import org.bukkit.event.EventPriority
 import org.bukkit.event.Listener
 import org.bukkit.event.server.ServerLoadEvent
 
-class ServerLoadEvent : Listener {
+class ServerLoadListener : Listener {
     @EventHandler(priority = EventPriority.MONITOR)
     fun onServerLoad(event: ServerLoadEvent) {
         if (event.type != ServerLoadEvent.LoadType.STARTUP) return

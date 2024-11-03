@@ -8,33 +8,40 @@ import me.duro.discordmc.utils.Webhook
 import org.bukkit.plugin.java.JavaPlugin
 
 class DiscordMC : JavaPlugin() {
-    companion object {
-        lateinit var instance: DiscordMC
-    }
     lateinit var toml: Config
 
     override fun onEnable() {
         instance = this
-        toml = ConfigLoader.loadConfig(this)!!
-        val events =
-                arrayOf(
-                        ChatListener(),
-                        CommandListener(),
-                        DeathListener(),
-                        JoinQuitListener(),
-                        ServerLoadEvent(),
-                        ScheduledRestart(this)
-                )
+
+        toml = try {
+            ConfigLoader.loadConfig(this)!!
+        } catch (e: Exception) {
+            logger.severe("Failed to load config.toml: ${e.message}")
+            e.printStackTrace()
+            return
+        }
+
         val commands = arrayOf("discordmc" to DiscordMCCommand())
+        val events = arrayOf(
+            ChatListener(),
+            CommandListener(),
+            DeathListener(),
+            JoinQuitListener(),
+            ServerLoadListener(),
+            ScheduledRestartListener()
+        )
 
+        commands.forEach { getCommand(it.first)?.setExecutor(it.second) }
         events.forEach { server.pluginManager.registerEvents(it, this) }
-
-        commands.forEach { this.getCommand(it.first)?.setExecutor(it.second) }
     }
 
     override fun onDisable() {
         if (!this.server.isStopping) return
 
         Webhook.sendWebhook(toml.stop)
+    }
+
+    companion object {
+        lateinit var instance: DiscordMC
     }
 }

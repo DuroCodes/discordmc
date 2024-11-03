@@ -21,7 +21,14 @@ class DiscordMCCommand : CommandExecutor, TabExecutor {
 
         when (args[0]) {
             "reload" -> {
-                DiscordMC.instance.toml = ConfigLoader.loadConfig(DiscordMC.instance)!!
+                DiscordMC.instance.toml = try {
+                    ConfigLoader.loadConfig(DiscordMC.instance)
+                        ?: throw Exception("Invalid config.toml. Please check the console for the stack trace.")
+                } catch (e: Exception) {
+                    sender.sendMessage("§c${e.message}")
+                    e.printStackTrace()
+                    return true
+                }
                 sender.sendMessage("§aReloaded DiscordMC config")
             }
 
@@ -34,10 +41,7 @@ class DiscordMCCommand : CommandExecutor, TabExecutor {
     }
 
     override fun onTabComplete(
-        sender: CommandSender,
-        command: Command,
-        label: String,
-        args: Array<out String>?
+        sender: CommandSender, command: Command, label: String, args: Array<out String>?
     ): List<String> {
         return mutableListOf("reload")
     }

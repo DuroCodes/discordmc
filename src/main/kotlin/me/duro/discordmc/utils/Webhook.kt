@@ -49,7 +49,7 @@ object Webhook {
     ) {
         if (config?.webhook == null) return
 
-        val url = URI(config.webhook).toURL()
+        val url = config.webhook?.let { URI(it).toURL() } ?: return
         val connection = url.openConnection() as HttpURLConnection
 
         try {

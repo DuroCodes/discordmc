@@ -31,18 +31,18 @@ a simple minecraft -> discord minecraft plugin made with Kotlin
 # - {message} - Chat message
 [chat]
 webhook = "https://discord.com/api/webhooks/123456/abcdef" # remove if you don't want a webhook
-content = "" # remove if you don't want content
+content = "The `chat` event was triggered..." # remove if you don't want content
 [chat.embed] # remove if you don't want an embed
-title = "chat"
-description = ""
+title = "Chat"
+description = "..."
 color = "#FFFFFF"
 timestamp = true
 [chat.embed.author]
-name = "{player}"
-iconUrl = "https://minotar.net/helm/{player}/512.png"
+name = "You can also supply authors"
+iconUrl = "https://images.pexels.com/photos/3772623/pexels-photo-3772623.jpeg?cs=srgb&dl=pexels-olly-3772623.jpg&fm=jpg"
 [chat.embed.footer]
-text = "chat"
-iconUrl = "https://cdn.discordapp.com/embed/avatars/0.png"
+text = "And footers"
+iconUrl = "https://cdn-prod.medicalnewstoday.com/content/images/articles/324/324336/bones-of-the-foot-infographic-em-image-credit-stephen-kelly-2019-br.jpg"
 
 # This gets triggered whenever a player joins the server
 # The placeholders available are:
@@ -53,18 +53,18 @@ iconUrl = "https://cdn.discordapp.com/embed/avatars/0.png"
 # - {world} - Player's world
 [join]
 webhook = "https://discord.com/api/webhooks/123456/abcdef" # remove if you don't want a webhook
-content = "" # remove if you don't want content
+content = "The `join` event was triggered..." # remove if you don't want content
 [join.embed] # remove if you don't want an embed
-title = "join"
-description = ""
+title = "Join"
+description = "..."
 color = "#FFFFFF"
 timestamp = true
 [join.embed.author]
-name = "{player}"
-iconUrl = "https://minotar.net/helm/{player}/512.png"
+name = "You can also supply authors"
+iconUrl = "https://images.pexels.com/photos/3772623/pexels-photo-3772623.jpeg?cs=srgb&dl=pexels-olly-3772623.jpg&fm=jpg"
 [join.embed.footer]
-text = "join"
-iconUrl = "https://cdn.discordapp.com/embed/avatars/0.png"
+text = "And footers"
+iconUrl = "https://cdn-prod.medicalnewstoday.com/content/images/articles/324/324336/bones-of-the-foot-infographic-em-image-credit-stephen-kelly-2019-br.jpg"
 
 # This gets triggered whenever a player leaves the server
 # The placeholders available are:
@@ -75,18 +75,18 @@ iconUrl = "https://cdn.discordapp.com/embed/avatars/0.png"
 # - {world} - Player's world
 [leave]
 webhook = "https://discord.com/api/webhooks/123456/abcdef" # remove if you don't want a webhook
-content = "" # remove if you don't want content
+content = "The `leave` event was triggered..." # remove if you don't want content
 [leave.embed] # remove if you don't want an embed
-title = "leave"
-description = ""
+title = "Leave"
+description = "..."
 color = "#FFFFFF"
 timestamp = true
 [leave.embed.author]
-name = "{player}"
-iconUrl = "https://minotar.net/helm/{player}/512.png"
+name = "You can also supply authors"
+iconUrl = "https://images.pexels.com/photos/3772623/pexels-photo-3772623.jpeg?cs=srgb&dl=pexels-olly-3772623.jpg&fm=jpg"
 [leave.embed.footer]
-text = "leave"
-iconUrl = "https://cdn.discordapp.com/embed/avatars/0.png"
+text = "And footers"
+iconUrl = "https://cdn-prod.medicalnewstoday.com/content/images/articles/324/324336/bones-of-the-foot-infographic-em-image-credit-stephen-kelly-2019-br.jpg"
 
 # This gets triggered whenever a player dies
 # The placeholders available are:
@@ -98,18 +98,18 @@ iconUrl = "https://cdn.discordapp.com/embed/avatars/0.png"
 # - {message} - Death message
 [death]
 webhook = "https://discord.com/api/webhooks/123456/abcdef" # remove if you don't want a webhook
-content = "" # remove if you don't want content
+content = "The `death` event was triggered..." # remove if you don't want content
 [death.embed] # remove if you don't want an embed
-title = "death"
-description = ""
+title = "Death"
+description = "..."
 color = "#FFFFFF"
 timestamp = true
 [death.embed.author]
-name = "{player}"
-iconUrl = "https://minotar.net/helm/{player}/512.png"
+name = "You can also supply authors"
+iconUrl = "https://images.pexels.com/photos/3772623/pexels-photo-3772623.jpeg?cs=srgb&dl=pexels-olly-3772623.jpg&fm=jpg"
 [death.embed.footer]
-text = "death"
-iconUrl = "https://cdn.discordapp.com/embed/avatars/0.png"
+text = "And footers"
+iconUrl = "https://cdn-prod.medicalnewstoday.com/content/images/articles/324/324336/bones-of-the-foot-infographic-em-image-credit-stephen-kelly-2019-br.jpg"
 
 # This gets triggered whenever a player runs a command
 # The placeholders available are:
@@ -121,18 +121,18 @@ iconUrl = "https://cdn.discordapp.com/embed/avatars/0.png"
 # - {message} - Command message
 [playerCommand]
 webhook = "https://discord.com/api/webhooks/123456/abcdef" # remove if you don't want a webhook
-content = "" # remove if you don't want content
+content = "The `playerCommand` event was triggered..." # remove if you don't want content
 [playerCommand.embed] # remove if you don't want an embed
-title = "playerCommand"
-description = ""
+title = "Player Command"
+description = "..."
 color = "#FFFFFF"
 timestamp = true
 [playerCommand.embed.author]
-name = "{player}"
-iconUrl = "https://minotar.net/helm/{player}/512.png"
+name = "You can also supply authors"
+iconUrl = "https://images.pexels.com/photos/3772623/pexels-photo-3772623.jpeg?cs=srgb&dl=pexels-olly-3772623.jpg&fm=jpg"
 [playerCommand.embed.footer]
-text = "playerCommand"
-iconUrl = "https://cdn.discordapp.com/embed/avatars/0.png"
+text = "And footers"
+iconUrl = "https://cdn-prod.medicalnewstoday.com/content/images/articles/324/324336/bones-of-the-foot-infographic-em-image-credit-stephen-kelly-2019-br.jpg"
 
 # This gets triggered whenever CONSOLE runs a command
 # The placeholders available are:
@@ -140,50 +140,70 @@ iconUrl = "https://cdn.discordapp.com/embed/avatars/0.png"
 # - {message} - Command message
 [serverCommand]
 webhook = "https://discord.com/api/webhooks/123456/abcdef" # remove if you don't want a webhook
-content = "" # remove if you don't want content
+content = "The `serverCommand` event was triggered..." # remove if you don't want content
 [serverCommand.embed] # remove if you don't want an embed
-title = "serverCommand"
-description = ""
+title = "Server Command"
+description = "..."
 color = "#FFFFFF"
 timestamp = true
 [serverCommand.embed.author]
-name = "{player}"
-iconUrl = "https://minotar.net/helm/{player}/512.png"
+name = "You can also supply authors"
+iconUrl = "https://images.pexels.com/photos/3772623/pexels-photo-3772623.jpeg?cs=srgb&dl=pexels-olly-3772623.jpg&fm=jpg"
 [serverCommand.embed.footer]
-text = "serverCommand"
-iconUrl = "https://cdn.discordapp.com/embed/avatars/0.png"
+text = "And footers"
+iconUrl = "https://cdn-prod.medicalnewstoday.com/content/images/articles/324/324336/bones-of-the-foot-infographic-em-image-credit-stephen-kelly-2019-br.jpg"
 
 # This gets triggered whenever the server starts
 # No placeholders available
 [start]
 webhook = "https://discord.com/api/webhooks/123456/abcdef" # remove if you don't want a webhook
-content = "" # remove if you don't want content
+content = "The `start` event was triggered..." # remove if you don't want content
 [start.embed] # remove if you don't want an embed
-title = "start"
-description = ""
+title = "Start"
+description = "..."
 color = "#FFFFFF"
 timestamp = true
 [start.embed.author]
-name = "{player}"
-iconUrl = "https://minotar.net/helm/{player}/512.png"
+name = "You can also supply authors"
+iconUrl = "https://images.pexels.com/photos/3772623/pexels-photo-3772623.jpeg?cs=srgb&dl=pexels-olly-3772623.jpg&fm=jpg"
 [start.embed.footer]
-text = "start"
-iconUrl = "https://cdn.discordapp.com/embed/avatars/0.png"
+text = "And footers"
+iconUrl = "https://cdn-prod.medicalnewstoday.com/content/images/articles/324/324336/bones-of-the-foot-infographic-em-image-credit-stephen-kelly-2019-br.jpg"
 
 # This gets triggered whenever the server stops
 # No placeholders available
 [stop]
 webhook = "https://discord.com/api/webhooks/123456/abcdef" # remove if you don't want a webhook
-content = "" # remove if you don't want content
+content = "The `stop` event was triggered..." # remove if you don't want content
 [stop.embed] # remove if you don't want an embed
-title = "stop"
-description = ""
+title = "Stop"
+description = "..."
 color = "#FFFFFF"
 timestamp = true
 [stop.embed.author]
-name = "{player}"
-iconUrl = "https://minotar.net/helm/{player}/512.png"
+name = "You can also supply authors"
+iconUrl = "https://images.pexels.com/photos/3772623/pexels-photo-3772623.jpeg?cs=srgb&dl=pexels-olly-3772623.jpg&fm=jpg"
 [stop.embed.footer]
-text = "stop"
-iconUrl = "https://cdn.discordapp.com/embed/avatars/0.png"
+text = "And footers"
+iconUrl = "https://cdn-prod.medicalnewstoday.com/content/images/articles/324/324336/bones-of-the-foot-infographic-em-image-credit-stephen-kelly-2019-br.jpg"
+
+# This gets triggered whenever the server is restarting
+# The placeholders available are:
+# - {message} - Restart message
+[restart]
+webhook = "https://discord.com/api/webhooks/123456/abcdef" # remove if you don't want a webhook
+times = ["00:00", "06:00", "12:00", "18:00"] # HH:MM format, in the server's timezone
+periods = [30, 10, 5, 4, 3, 2, 1] # minutes before restart
+content = "The `restart` event was triggered..." # remove if you don't want content
+[restart.embed] # remove if you don't want an embed
+title = "Restart"
+description = "..."
+color = "#FFFFFF"
+timestamp = true
+[restart.embed.author]
+name = "You can also supply authors"
+iconUrl = "https://images.pexels.com/photos/3772623/pexels-photo-3772623.jpeg?cs=srgb&dl=pexels-olly-3772623.jpg&fm=jpg"
+[restart.embed.footer]
+text = "And footers"
+iconUrl = "https://cdn-prod.medicalnewstoday.com/content/images/articles/324/324336/bones-of-the-foot-infographic-em-image-credit-stephen-kelly-2019-br.jpg"
 ```

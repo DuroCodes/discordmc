@@ -4,6 +4,7 @@ import cc.ekblad.toml.decode
 import org.bukkit.plugin.java.JavaPlugin
 import cc.ekblad.toml.tomlMapper
 import java.io.File
+import java.io.IOException
 import java.nio.file.Path
 
 interface WebhookConfig {
@@ -20,6 +21,7 @@ data class EventConfig(
 
 data class RestartConfig(
     val times: List<String>? = emptyList(),
+    val periods: List<Int>? = emptyList(),
     override val webhook: String? = null,
     override val embed: Webhook.Embed? = null,
     override val content: String? = null
@@ -47,8 +49,11 @@ object ConfigLoader {
         }
 
         tomlMapper { }.decode<Config>(Path.of(filePath.toURI()))
+    } catch (e: IOException) {
+        plugin.logger.severe("Failed to load config.toml: ${e.message}")
+        null
     } catch (e: Exception) {
-        e.printStackTrace()
+        plugin.logger.severe("An unexpected error occurred while loading config.toml: ${e.message}")
         null
     }
 
@@ -82,7 +87,7 @@ object ConfigLoader {
             ),
             Triple("start", "the server starts", null),
             Triple("stop", "the server stops", null),
-            Triple("restart", "the server is restarting", mapOf("{message}" to "Restart Mssage"))
+            Triple("restart", "the server is restarting", mapOf("{message}" to "Restart message"))
         )
 
         events.forEach {
@@ -92,6 +97,8 @@ object ConfigLoader {
         return configBuilder.toString()
     }
 
+    fun titleCase(str: String) = str.split(Regex("(?=[A-Z])"))
+        .joinToString(" ") { s -> s.replaceFirstChar { if (it.isLowerCase()) it.titlecase() else it.toString() } }
 
     private fun generateEventConfig(
         eventName: String, description: String, placeholders: Map<String, String>?
@@ -106,24 +113,28 @@ object ConfigLoader {
             placeholdersComment,
             "[$eventName]",
             "webhook = \"https://discord.com/api/webhooks/123456/abcdef\" # remove if you don't want a webhook",
-            "content = \"\" # remove if you don't want content",
+            "content = \"The `$eventName` event was triggered...\" # remove if you don't want content",
             "[$eventName.embed] # remove if you don't want an embed",
-            "title = \"$eventName\"",
-            "description = \"\"",
+            "title = \"${titleCase(eventName)}\"",
+            "description = \"...\"",
             "color = \"#FFFFFF\"",
             "timestamp = true",
             "[$eventName.embed.author]",
-            "name = \"{player}\"",
-            "iconUrl = \"https://minotar.net/helm/{player}/512.png\"",
+            "name = \"You can also supply authors\"",
+            "iconUrl = \"https://images.pexels.com/photos/3772623/pexels-photo-3772623.jpeg?cs=srgb&dl=pexels-olly-3772623.jpg&fm=jpg\"",
             "[$eventName.embed.footer]",
-            "text = \"$eventName\"",
-            "iconUrl = \"https://cdn.discordapp.com/embed/avatars/0.png\""
+            "text = \"And footers\"",
+            "iconUrl = \"https://cdn-prod.medicalnewstoday.com/content/images/articles/324/324336/bones-of-the-foot-infographic-em-image-credit-stephen-kelly-2019-br.jpg\""
         )
 
         if (eventName == "restart") {
-            val webhookIndex = options.indexOfFirst { it.startsWith("webhook =") }
-            if (webhookIndex != -1) {
-                options.add(webhookIndex + 1, "times = [\"00:00\", \"06:00\", \"12:00\", \"18:00\"]")
+            val webhookIdx = options.indexOfFirst { it.startsWith("webhook =") }
+            if (webhookIdx != -1) {
+                options.add(
+                    webhookIdx + 1,
+                    "times = [\"00:00\", \"06:00\", \"12:00\", \"18:00\"] # HH:MM format, in the server's timezone"
+                )
+                options.add(webhookIdx + 2, "periods = [30, 10, 5, 4, 3, 2, 1] # minutes before restart")
             }
         }
 
