@@ -4,7 +4,7 @@ plugins {
 }
 
 group = "me.duro"
-version = "1.0-SNAPSHOT"
+version = "1.0.1-SNAPSHOT"
 
 repositories {
     mavenCentral()
@@ -23,6 +23,7 @@ dependencies {
     compileOnly("io.papermc.paper:paper-api:1.21.1-R0.1-SNAPSHOT")
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
     implementation("cc.ekblad:4koma:1.2.0")
+    implementation("com.cronutils:cron-utils:9.2.1")
 }
 
 val targetJavaVersion = 21

@@ -33,6 +33,7 @@ class DiscordMC : JavaPlugin() {
 
         commands.forEach { getCommand(it.first)?.setExecutor(it.second) }
         events.forEach { server.pluginManager.registerEvents(it, this) }
+        this.logger.info("Enabled Plugin")
     }
 
     override fun onDisable() {

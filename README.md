@@ -195,6 +195,7 @@ webhook = "https://discord.com/api/webhooks/123456/abcdef" # remove if you don't
 times = ["00:00", "06:00", "12:00", "18:00"] # HH:MM format, in the server's timezone
 periods = [30, 10, 5, 4, 3, 2, 1] # minutes before restart
 content = "The `restart` event was triggered..." # remove if you don't want content
+cron = "* * * * *" # leave as is to ignore or change to ignore restart.times
 [restart.embed] # remove if you don't want an embed
 title = "Restart"
 description = "..."

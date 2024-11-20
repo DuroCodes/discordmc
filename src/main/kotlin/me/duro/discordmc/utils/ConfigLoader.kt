@@ -22,6 +22,7 @@ data class EventConfig(
 data class RestartConfig(
     val times: List<String>? = emptyList(),
     val periods: List<Int>? = emptyList(),
+    val cron: String,
     override val webhook: String? = null,
     override val embed: Webhook.Embed? = null,
     override val content: String? = null
@@ -135,6 +136,7 @@ object ConfigLoader {
                     "times = [\"00:00\", \"06:00\", \"12:00\", \"18:00\"] # HH:MM format, in the server's timezone"
                 )
                 options.add(webhookIdx + 2, "periods = [30, 10, 5, 4, 3, 2, 1] # minutes before restart")
+                options.add(webhookIdx + 3, "#cron = \"* * * * *\"  # remove the comment tag to use cron jobs, setting this will ignore restart.times")
             }
         }
 
