@@ -8,6 +8,8 @@ import org.bukkit.command.CommandSender
 import org.bukkit.command.TabExecutor
 
 class DiscordMCCommand : CommandExecutor, TabExecutor {
+    private val GREEN = "\u001B[32m"
+    private val RESET = "\u001B[0m"
     override fun onCommand(sender: CommandSender, command: Command, label: String, args: Array<out String>?): Boolean {
         if (!sender.hasPermission("discordmc.reload")) {
             sender.sendMessage("§cYou do not have permission to use this command")
@@ -30,6 +32,7 @@ class DiscordMCCommand : CommandExecutor, TabExecutor {
                     return true
                 }
                 sender.sendMessage("§aReloaded DiscordMC config")
+                DiscordMC.instance.logger.info("${GREEN}Reloaded DiscordMC config${RESET}")
             }
 
             else -> {
